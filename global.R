@@ -1,3 +1,5 @@
+#global
+
 library(shiny)
 library(DBI)
 library(dbplyr)
@@ -13,25 +15,52 @@ library(RPostgres)
 library(plotly)
 library(htmltools)
 
-# Database connection
-
-setwd("C:/Users/etracy1/Desktop/Backup/R_directory/PATH/path_shiny-main")
-
 # add to git ignore so this info doesnt get uploaded
 args <- config::get("dataconnection")
 con <- pool::dbPool(odbc::odbc(),
-                 driver = args$driver,
-                 database = args$database,
-                 uid = args$uid,
-                 pwd = args$pwd,
-                 server = args$server,
-                 port = args$port
+                    driver = args$driver,
+                    database = args$database,
+                    uid = args$uid,
+                    pwd = args$pwd,
+                    server = args$server,
+                    port = args$port
 )
 
 # Table hooks
 all_animals <- tbl(con, in_schema("discovery", "all_animals"))
 pre_summary <- tbl(con, in_schema("discovery", "detection_pre_summary"))
 stations <- tbl(con, in_schema("discovery", "stations_header"))
+
+#Changed code
+
+#added the obis table 
+obis.otn_animals <- tbl(con, in_schema("obis", "otn_animals"))
+obis.publication_control <- tbl(con, in_schema("obis", "publication_control"))
+
+
+#This should work and is a better solution to excluding projects that don't want to share data but doesn't
+
+# Static date
+#static_date <- as.Date('2023-12-22')
+
+# Filter obis.otn_animals dataset based on datedetectionsreleased using the static date
+#filtered_catalog_numbers <- obis.otn_animals %>%
+#  filter(datedetectionsreleased > static_date) %>%
+#  pull(catalognumber)
+
+# Filter pre_summary based on relatedcatalogitem matching filtered catalog numbers
+#result <- pre_summary %>%
+#  filter(relatedcatalogitem %in% filtered_catalog_numbers)
+
+
+#This will need to be updated when they want to share data or someone else doesn't want to share. I can't make the more elegant code work
+result <- pre_summary %>%
+  filter(collectioncode != 'CDFWA15') %>%
+  filter(trackercode != 'CDFWA15')
+
+pre_summary <- result
+
+#normal code
 
 species_available <- all_animals |>
   select(scientificname) |>
@@ -50,7 +79,7 @@ year_range <- pre_summary |>
             max = lubridate::year(max(max_detectdate, na.rm = TRUE))) |>
   collect()
 
-projects_available <- tbl(con, in_schema("discovery", "mstr_resources")) |>
+projects_available <- tbl(con, in_schema("obis", "publication_control")) |>
   pull(collectioncode) |>
   sort()
 
@@ -122,4 +151,3 @@ left join (
 ) moor_down
 on moor_down.relatedcatalogitem = rcv.catalognumber
 where rcv.station_name = ?station"
-
