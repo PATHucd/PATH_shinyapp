@@ -23,6 +23,9 @@ sharedServer <- function(id) {
 
       # Dynamic UI ----
 
+      # Get the namespace to append onto dynamic UI ids
+      ns <- NS(id)
+
       observeEvent(input$tags, {
 
         if (is.null(tag_code_list())) {
@@ -34,14 +37,14 @@ sharedServer <- function(id) {
         showModal(modalDialog(
           title = "Specify Tag Codes",
           size = "l",
-          textAreaInput("tag_codes", "Enter or copy tag codes here, separated by commas or whitespace",
+          textAreaInput(ns("tag_codes"), "Enter or copy tag codes here, separated by commas or whitespace",
                         value = input_text,
                         placeholder = "A69-1206-776\nA69-1303-17245",
                         width = "100%",
                         rows = 6),
           footer = tagList(
             modalButton("Cancel"),
-            actionButton("tag_ok", "OK")
+            actionButton(ns("tag_ok"), "OK")
           )
         ))
 
