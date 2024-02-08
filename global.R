@@ -37,7 +37,6 @@ stations <- tbl(con, in_schema("discovery", "stations_header"))
 obis.otn_animals <- tbl(con, in_schema("obis", "otn_animals"))
 obis.publication_control <- tbl(con, in_schema("obis", "publication_control"))
 
-
 #This should work and is a better solution to excluding projects that don't want to share data but doesn't
 
 # Static date
@@ -54,6 +53,7 @@ obis.publication_control <- tbl(con, in_schema("obis", "publication_control"))
 
 
 #This will need to be updated when they want to share data or someone else doesn't want to share. I can't make the more elegant code work
+# I am also filtering out all scientific name is na data so its only animal detections instead of unmatched tags (myster tags etc.)
 result <- pre_summary %>%
   filter(collectioncode != 'CDFWA15') %>%
   filter(trackercode != 'CDFWA15')
@@ -79,7 +79,7 @@ year_range <- pre_summary |>
             max = lubridate::year(max(max_detectdate, na.rm = TRUE))) |>
   collect()
 
-projects_available <- tbl(con, in_schema("obis", "publication_control")) |>
+projects_available <- tbl(con, in_schema("discovery", "mstr_resources")) |>
   pull(collectioncode) |>
   sort()
 
