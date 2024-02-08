@@ -18,6 +18,7 @@ summaryServer <- function(id, data_query) {
 
       output$dt <- DT::renderDataTable({
         df <- data_query() |>
+          filter(!is.na(scientificname) & scientificname != "") |>
           collect()
         datatable(df, class = "compact stripe hover nowrap",
                   rownames = FALSE,
@@ -36,6 +37,7 @@ summaryServer <- function(id, data_query) {
         },
         content = function(filename) {
           df <- data_query() |>
+            filter(!is.na(scientificname) & scientificname != "") |>
             collect()
           write_csv(df, filename)
         }
