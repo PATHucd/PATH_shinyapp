@@ -1,5 +1,5 @@
 fluidPage(
-  theme = bs_theme(bootswatch = "darkly"), # pick a theme at https://bootswatch.com/
+  theme = bs_theme(bootswatch = "cerulean"), # pick a theme at https://bootswatch.com/
   titlePanel("Pacific Aquatic Telemetry Hub (PATH) Database Tool"),
 
   sidebarLayout(
