@@ -39,7 +39,7 @@ sharedServer <- function(id) {
           size = "l",
           textAreaInput(ns("tag_codes"), "Enter or copy tag codes here, separated by commas or whitespace",
                         value = input_text,
-                        placeholder = "A69-1206-776\nA69-1303-17245",
+                        placeholder = "e.g., A69-1206-776\nA6a9-1303-17245",
                         width = "100%",
                         rows = 6),
           footer = tagList(
@@ -61,13 +61,16 @@ sharedServer <- function(id) {
 
       # Data reactives ----
 
+      all_animals <- all_animals %>%
+        rename(lat_animals = latitude, long_animals = longitude)
+      
       data_query <- reactive({
 
         dfq <- pre_summary |>
           left_join(select(all_animals, catalognumber, collectioncode, scientificname),
                     by = c("relatedcatalogitem"="catalognumber",
                            "collectioncode"="collectioncode")) |>
-          left_join(select(stations, station_name, latitude, longitude, depth),
+          left_join(select(stations, station_name, latitude, longitude),
                     by = c("station"="station_name")) |>
           left_join(species_tbl, by = "scientificname")
 
