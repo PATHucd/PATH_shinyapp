@@ -1,3 +1,4 @@
+
 summaryUI <- function(id, label = 'Data Summary Table UI') {
   ns <- NS(id)
 
@@ -19,8 +20,11 @@ summaryServer <- function(id, data_query) {
       output$dt <- DT::renderDataTable({
         df <- data_query() |>
           filter(!is.na(scientificname) & scientificname != "") |>
+          distinct(weekcollected, station, scientificname, .keep_all = TRUE) |>
           collect()
-        datatable(df, class = "compact stripe hover nowrap",
+        datatable(df [, c("commonname", "scientificname", "station", "latitude", "longitude", "detection_count", "weekcollected", "min_detectdate", "max_detectdate",
+                           "collectioncode", "trackercode")],  # Keep specified columns
+                  class = "compact stripe hover nowrap",
                   rownames = FALSE,
                   fillContainer = TRUE,
                   options = list(
@@ -38,6 +42,7 @@ summaryServer <- function(id, data_query) {
         content = function(filename) {
           df <- data_query() |>
             filter(!is.na(scientificname) & scientificname != "") |>
+            distinct(weekcollected, station, scientificname, .keep_all = TRUE) |>
             collect()
           write_csv(df, filename)
         }
@@ -46,3 +51,4 @@ summaryServer <- function(id, data_query) {
     }
   )
 }
+
