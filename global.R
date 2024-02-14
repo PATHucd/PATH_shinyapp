@@ -15,6 +15,7 @@ library(RPostgres)
 library(plotly)
 library(htmltools)
 
+
 # add to git ignore so this info doesnt get uploaded
 args <- config::get("dataconnection")
 con <- pool::dbPool(odbc::odbc(),
