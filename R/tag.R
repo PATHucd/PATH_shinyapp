@@ -10,6 +10,9 @@ tagUI <- function(id, label = 'Tag History UI') {
                                        choices = initial_tags)),
     ),
     fluidRow(
+      p("Select a tag code to display a map of its detection history")
+    ),
+    fluidRow(
       leafletOutput(ns("map"), height = "500px")
     )
   )
@@ -48,6 +51,8 @@ tagServer <- function(id, parent) {
       })
 
       output$map <- renderLeaflet({
+        
+        req(input$year, input$tag_code)
 
         leaflet() |>
           addProviderTiles("Esri.WorldGrayCanvas", group = "Gray") |>

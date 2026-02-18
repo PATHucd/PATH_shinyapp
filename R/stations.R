@@ -28,6 +28,8 @@ stationsServer <- function(id, data_query, parent) {
       })
 
       output$map <- renderLeaflet({
+        
+        req(input$species, input$year, input$locations, input$project, input$tag_code)
 
         leaflet() |>
           addProviderTiles("Esri.WorldGrayCanvas", group = "Gray") |>

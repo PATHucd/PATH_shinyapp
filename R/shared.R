@@ -39,7 +39,7 @@ sharedServer <- function(id) {
           size = "l",
           textAreaInput(ns("tag_codes"), "Enter or copy tag codes here, separated by commas or whitespace",
                         value = input_text,
-                        placeholder = "e.g., A69-1206-776\nA6a9-1303-17245",
+                        placeholder = "e.g., A69-1206-776\nA69-1303-17245",
                         width = "100%",
                         rows = 6),
           footer = tagList(

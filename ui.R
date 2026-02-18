@@ -19,11 +19,10 @@ fluidPage(
              #   )
             #  ),     
                          
-                            
-              tabPanel("Stations", stationsUI("stations")),
-                tabPanel("Summary", summaryUI("summary")),
+                tabPanel("About", aboutUI("about")),
                 tabPanel("Tag History", tagUI("tag")),
-               tabPanel("About", aboutUI("about"))
+                tabPanel("Stations", stationsUI("stations")),
+                tabPanel("Summary", summaryUI("summary"))
               )
     )
 

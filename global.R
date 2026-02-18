@@ -26,6 +26,13 @@ con <- pool::dbPool(odbc::odbc(),
                     server = args$server,
                     port = args$port
 )
+# con <- pool::dbPool(RPostgres::Postgres(),
+#                     host = args$server,
+#                     dbname = args$database,
+#                     user = args$uid,
+#                     password = args$pwd,
+#                     port = args$port
+#                    )
 
 # Table hooks
 all_animals <- tbl(con, in_schema("discovery", "all_animals"))
@@ -41,16 +48,16 @@ obis.publication_control <- tbl(con, in_schema("obis", "publication_control"))
 #This should work and is a better solution to excluding projects that don't want to share data but doesn't
 
 # Static date
-#static_date <- as.Date('2023-12-22')
+static_date <- as.Date('2023-12-22')
 
 # Filter obis.otn_animals dataset based on datedetectionsreleased using the static date
-#filtered_catalog_numbers <- obis.otn_animals %>%
-#  filter(datedetectionsreleased > static_date) %>%
-#  pull(catalognumber)
+filtered_catalog_numbers <- obis.otn_animals %>%
+  filter(datedetectionsreleased > static_date) %>%
+  pull(catalognumber)
 
 # Filter pre_summary based on relatedcatalogitem matching filtered catalog numbers
-#result <- pre_summary %>%
-#  filter(relatedcatalogitem %in% filtered_catalog_numbers)
+result <- pre_summary %>%
+  filter(relatedcatalogitem %in% filtered_catalog_numbers)
 
 
 #This will need to be updated when they want to share data or someone else doesn't want to share. I can't make the more elegant code work
