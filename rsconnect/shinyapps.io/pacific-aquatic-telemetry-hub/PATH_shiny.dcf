@@ -5,9 +5,8 @@ account: pacific-aquatic-telemetry-hub
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 9523749
-bundleId: 7508060
+bundleId: 11603786
 url: https://pacific-aquatic-telemetry-hub.shinyapps.io/PATH_shiny/
-when: 1690580575.31798
-lastSyncTime: 1690580575.318
 asMultiple: FALSE
 asStatic: FALSE
+ignoredFiles: config_local.yml
